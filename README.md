@@ -11,12 +11,12 @@ The pipeline follows the **Medallion Architecture**:
 - **Silver (Conformed):** Expanding lease dates and occupancies into daily granularity (a Calendar Spine) to handle cross-month lease logic accurately.
 - **Gold (Marts):** Final aggregations and metrics computation for downstream BI consumption (e.g., Looker Studio).
 
-![dbt Data Lineage](/Users/fazlur.amin/Documents/GIT/cove_sr_de_assignment/documentation/dbt Data Lineage.png)
+![dbt Data Lineage](documentation/dbt%20Data%20Lineage.png)
 
 ## Final Result (Dashboard)
 The materialized gold layer tables were directly connected to Looker Studio to produce the requested visualizations:
-
-![Looker Occupancy Dashboard](/Users/fazlur.amin/Documents/GIT/cove_sr_de_assignment/documentation/Looker_occupancy_rate_dashboard.png)
+Link : https://datastudio.google.com/s/kXBhB_Ios8I
+![Looker Occupancy Dashboard](documentation/Looker_occupancy_rate_dashboard.png)
 
 ## Documentation Links
 For detailed instructions and explanations, please refer to the documentation folder:

@@ -43,7 +43,7 @@ dbt run --full-refresh --profiles-dir .
 *The `--full-refresh` flag ensures that any existing tables/views are dropped and recreated cleanly.*
 
 ## 4. Testing
-We have defined basic `not_null` and `unique` primary key tests in the `models/schema.yml`. To execute them:
+I have defined basic `not_null` and `unique` primary key tests in the `models/schema.yml`. To execute them:
 
 ```bash
 dbt test --profiles-dir .
