@@ -15,7 +15,7 @@ The raw MongoDB exports were natively ingested into BigQuery.
 ![BQ Bronze L0 Tenancies](BQ_bronze_l0_tenancies.png)
 
 ### 1. Bronze Layer (Staging)
-* **Models:** `bronze_l1_properties`, `bronze_l1_rooms`, `bronze_l1_tenancies`
+* **Models:** [`bronze_l1_properties`](../models/bronze/bronze_l1_properties.sql), [`bronze_l1_rooms`](../models/bronze/bronze_l1_rooms.sql), [`bronze_l1_tenancies`](../models/bronze/bronze_l1_tenancies.sql)
 * **Purpose:** Acts as a 1:1 reflection of the raw `cove_dataset` tables. I apply native BigQuery type casting (strings to dates/timestamps) and rename columns to standardize the naming convention (snake_case).
 
 ![BQ Bronze L1 Properties](BQ_bronze_l1_properties.png)
@@ -23,7 +23,7 @@ The raw MongoDB exports were natively ingested into BigQuery.
 ![BQ Bronze L1 Tenancies](BQ_bronze_l1_tenancies.png)
 
 ### 2. Silver Layer (Cleaned)
-* **Models:** `silver_rooms_daily_status`, `silver_tenancies_daily_occupancy`
+* **Models:** [`silver_rooms_daily_status`](../models/silver/silver_rooms_daily_status.sql), [`silver_tenancies_daily_occupancy`](../models/silver/silver_tenancies_daily_occupancy.sql)
 * **Purpose:** Explodes the data. 
     - **Rooms Daily Status:** I use BigQuery's `GENERATE_DATE_ARRAY` to generate a master calendar spanning the earliest to latest property lease dates. Then I perform a `CROSS JOIN` with the bronze rooms data, keeping only the days where the property lease is active and the room/property hasn't been deleted.
     - **Tenancies Daily Occupancy:** For all active tenancies, I explode the duration between `check_in_date` and the day *before* `check_out_date` into individual days.
@@ -32,7 +32,7 @@ The raw MongoDB exports were natively ingested into BigQuery.
 ![BQ Silver Tenancies](BQ_silver_tenancies_daily_occupancy.png)
 
 ### 3. Gold Layer (Business Marts)
-* **Models:** `gold_monthly_property_occupancy`
+* **Models:** [`gold_monthly_property_occupancy`](../models/gold/gold_monthly_property_occupancy.sql)
 * **Purpose:** Final Aggregation. I perform a `LEFT JOIN` from the generated available room days to the occupied tenancy days. I then deduplicate any overlapping edge cases, group by the property and calendar month, and simply count the total days.
     - `total_available_room_days`: Total physical room days existing in that month.
     - `total_occupied_room_days`: Total room days successfully joined to an active tenancy.
