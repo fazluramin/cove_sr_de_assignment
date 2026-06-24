@@ -1,0 +1,11 @@
+dbt_occupancy:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: top-alliance-323312
+      dataset: cove_dataset
+      threads: 4
+      keyfile: service_account/top-alliance-323312-b246f3b9bcd4.json
+      location: asia-southeast2

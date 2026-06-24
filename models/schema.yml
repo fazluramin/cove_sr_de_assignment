@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: cove_dataset
+    description: "Raw data exported from MongoDB JSONL files."
+    tables:
+      - name: bronze_l0_properties
+      - name: bronze_l0_rooms
+      - name: bronze_l0_tenancies
+
+models:
+  - name: bronze_l1_properties
+    description: "Staging model for properties, casting dates and timestamps."
+    columns:
+      - name: property_id
+        tests:
+          - unique
+          - not_null
+      - name: lease_start_date
+      - name: lease_end_date
+
+  - name: bronze_l1_rooms
+    description: "Staging model for rooms."
+    columns:
+      - name: room_id
+        tests:
+          - unique
+          - not_null
+      - name: property_id
+        tests:
+          - not_null
+
+  - name: bronze_l1_tenancies
+    description: "Staging model for tenancies."
+    columns:
+      - name: tenancy_id
+        tests:
+          - unique
+          - not_null
+      - name: room_id
+        tests:
+          - not_null
+
+  - name: silver_rooms_daily_status
+    description: "Generates a daily calendar spine for all active rooms based on property leases."
+
+  - name: silver_tenancies_daily_occupancy
+    description: "Explodes active tenancies into daily occupied records."
+
+  - name: gold_monthly_property_occupancy
+    description: "Aggregated monthly occupancy rate per property."
+    columns:
+      - name: calendar_month
+      - name: property_id
+      - name: total_available_room_days
+      - name: total_occupied_room_days
+      - name: occupancy_rate
+        description: "Percentage of occupied room days out of total available room days."
